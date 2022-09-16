@@ -129,6 +129,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  maxSpeed: 5
+  levelName: Level2
 --- !u!135 &4253331703500642574
 SphereCollider:
   m_ObjectHideFlags: 0

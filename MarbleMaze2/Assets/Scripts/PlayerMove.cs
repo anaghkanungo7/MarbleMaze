@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class PlayerMove : MonoBehaviour
     Rigidbody _rigidbody;
     bool isGrounded = false;
     bool canMove = true;
+    
+    public string levelName = "Level2";
 
     void Start()
     {
@@ -38,7 +41,10 @@ public class PlayerMove : MonoBehaviour
             _rigidbody.velocity = Vector3.ClampMagnitude(_rigidbody.velocity, maxSpeed);
             _rigidbody.AddForce(relativeMovement);
         }
-        
+
+        if (_rigidbody.transform.position.y < -5) {
+            SceneManager.LoadScene(levelName);
+        }
 
 
         // _rigidbody.AddForce(new Vector3(xSpeed, 0, zSpeed));
