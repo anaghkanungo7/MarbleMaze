@@ -10,6 +10,7 @@ public class PlayerMove : MonoBehaviour
 
     Rigidbody _rigidbody;
     bool isGrounded = false;
+    bool canMove = true;
 
     void Start()
     {
@@ -17,7 +18,7 @@ public class PlayerMove : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void LateUpdate()
     {
 
         // Update runs as fast as you can
@@ -26,17 +27,22 @@ public class PlayerMove : MonoBehaviour
         
 
         // Implement Player Movement
-        float zSpeed = Input.GetAxis("Horizontal") * speed; // modified as per camera movement
-        float xSpeed = Input.GetAxis("Vertical") * speed;
+        if (canMove) {
+            float zSpeed = Input.GetAxis("Horizontal") * speed; // modified as per camera movement
+            float xSpeed = Input.GetAxis("Vertical") * speed;
 
-        Vector3 movement = new Vector3 (zSpeed, 0.0f, xSpeed);
-        Vector3 relativeMovement = Camera.main.transform.TransformVector(movement);
-        relativeMovement += Vector3.right + Vector3.forward;
-
-        _rigidbody.AddForce(relativeMovement);
+            Vector3 movement = new Vector3 (zSpeed, 0.0f, xSpeed);
+            Vector3 relativeMovement = Camera.main.transform.TransformVector(movement);
+            // relativeMovement += Vector3.right + Vector3.forward;
+            _rigidbody.velocity = Vector3.ClampMagnitude(_rigidbody.velocity, 5f);
+            _rigidbody.AddForce(relativeMovement);
+        }
+        
 
 
         // _rigidbody.AddForce(new Vector3(xSpeed, 0, zSpeed));
+
+        
 
 
 
@@ -44,12 +50,11 @@ public class PlayerMove : MonoBehaviour
         if (Input.GetButtonDown("Jump")) {
             if (isGrounded == true) {
                 _rigidbody.AddForce(new Vector3(0, 8, 0), ForceMode.Impulse);
-            }
-            else {
-                // print("Jump failed");
+                canMove = false;
             }
             // print("Jump attempted!");
             isGrounded = false;
+
         }
 
 
@@ -58,6 +63,7 @@ public class PlayerMove : MonoBehaviour
     void OnTriggerEnter(Collider theCollision) {
         if (theCollision.gameObject.tag == "floor") {
             isGrounded = true;
+            canMove = true;
         }
         // else {
         //     isGrounded = false;
