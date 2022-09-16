@@ -6,6 +6,7 @@ public class PlayerMove : MonoBehaviour
 {
 
     public float speed = 4;
+    public float maxSpeed = 5f;
     // Start is called before the first frame update
 
     Rigidbody _rigidbody;
@@ -34,7 +35,7 @@ public class PlayerMove : MonoBehaviour
             Vector3 movement = new Vector3 (zSpeed, 0.0f, xSpeed);
             Vector3 relativeMovement = Camera.main.transform.TransformVector(movement);
             // relativeMovement += Vector3.right + Vector3.forward;
-            _rigidbody.velocity = Vector3.ClampMagnitude(_rigidbody.velocity, 5f);
+            _rigidbody.velocity = Vector3.ClampMagnitude(_rigidbody.velocity, maxSpeed);
             _rigidbody.AddForce(relativeMovement);
         }
         
